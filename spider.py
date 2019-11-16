@@ -64,7 +64,7 @@ class Spider:
         for url in links:
             if (url in Spider.queue) or (url in Spider.crawled):
                 continue
-            if Spider.domain_name != get_domain_name(url):
+            if Spider.domain_name != get_domain_name(url): #can be removed to make to map other domains from given domain
                 continue
             Spider.queue.add(url)
 

@@ -4,12 +4,12 @@ from spider import Spider
 from domain import *
 from general import *
 
-PROJECT_NAME = 'viper-seo'
-HOMEPAGE = 'http://viper-seo.com/'
+PROJECT_NAME = input("Enter project name : ")
+HOMEPAGE = input("Enter the homepage/starting page : ")
 DOMAIN_NAME = get_domain_name(HOMEPAGE)
 QUEUE_FILE = PROJECT_NAME + '/queue.txt'
 CRAWLED_FILE = PROJECT_NAME + '/crawled.txt'
-NUMBER_OF_THREADS = 8
+NUMBER_OF_THREADS = int(input("Threads Required : "))
 queue = Queue()
 Spider(PROJECT_NAME, HOMEPAGE, DOMAIN_NAME)
 
@@ -44,7 +44,16 @@ def crawl():
     if len(queued_links) > 0:
         print(str(len(queued_links)) + ' links in the queue')
         create_jobs()
+    else:
+        Spider.update_files()
+        exit(0)
 
+try:
+    create_workers()
+    crawl()
 
-create_workers()
-crawl()
+except:
+    print("[!].... Quitting")
+    print('Queue ' + str(len(Spider.queue)) + ' | Crawled  ' + str(len(Spider.crawled)))
+    Spider.update_files()
+    exit(0)
